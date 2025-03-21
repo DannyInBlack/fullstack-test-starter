@@ -82,9 +82,9 @@ abstract class DataSource
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
-        
+
         $products = [];
-        
+
         if ($result) {
             while ($row = $result->fetch_assoc()) {
                 // var_dump($row);
@@ -191,4 +191,57 @@ abstract class DataSource
 
         return $attributes;
     }
+
+    public static function getProductPrice(string $productId): ?float
+    {
+        $conn = self::getConn();
+        $sql = "SELECT amount FROM prices WHERE product_id = ? LIMIT 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $productId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($row = $result->fetch_assoc()) {
+            return (float) $row['amount'];
+        }
+
+        return null; // Return null if the product ID is invalid
+    }
+
+    public static function insertOrder(float $total): int
+    {
+        $conn = self::getConn();
+        $sql = "INSERT INTO orders (total) VALUES (?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("d", $total);
+        $stmt->execute();
+
+        if ($stmt->error) {
+            throw new \RuntimeException("Failed to insert order: " . $stmt->error);
+        }
+
+        return $stmt->insert_id; // Return the ID of the newly inserted order
+    }
+
+    public static function insertOrderProduct(int $orderId, string $productId, int $quantity): bool
+    {
+        $conn = self::getConn();
+        $sql = "INSERT INTO order_product (order_id, product_id, quantity) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("isi", $orderId, $productId, $quantity);
+        $stmt->execute();
+
+        return $stmt->error? false: true;
+    }
+
+public static function insertOrderProductAttribute(int $orderId, string $productId, string $attributeId): bool
+{
+    $conn = self::getConn();
+    $sql = "INSERT INTO order_product_attribute (order_id, product_id, attribute_id) VALUES (?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("iss", $orderId, $productId, $attributeId);
+    $stmt->execute();
+
+    return $stmt->error? false: true;
+}
 }

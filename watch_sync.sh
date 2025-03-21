@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script automatically syncs this repo with the htdocs/scandi dir
+# This script automatically syncs this repo with the htdocs/fullstack-test-starter dir
 
 while inotifywait -r -e modify,create,delete /home/danny/Desktop/Repos/fullstack-test-starter; do
     sudo rsync -av --delete /home/danny/Desktop/Repos/fullstack-test-starter/ /opt/lampp/htdocs/fullstack-test-starter/

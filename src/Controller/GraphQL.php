@@ -21,7 +21,7 @@ class GraphQL
             $schema = new Schema(
                 (new SchemaConfig())
                     ->setQuery(new QueryType())
-                    // ->setMutation(new MutationType())
+                    ->setMutation(new MutationType())
                     ->setTypeLoader(fn (string $typeName) => new TypeRegistry($typeName))
             );
 

@@ -60,3 +60,28 @@ CREATE TABLE IF NOT EXISTS currencies (
     symbol VARCHAR(255),
     FOREIGN KEY (price_id) REFERENCES prices(id)
 );
+
+CREATE TABLE IF NOT EXISTS orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    total FLOAT NOT NULL,
+    date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS order_product (
+    order_id INT,
+    product_id VARCHAR(255),
+    quantity INT NOT NULL,
+    PRIMARY KEY (order_id, product_id),
+    FOREIGN KEY (order_id) REFERENCES orders(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
+CREATE TABLE IF NOT EXISTS order_product_attribute (
+    order_id INT,
+    product_id VARCHAR(255),
+    attribute_id VARCHAR(255),
+    PRIMARY KEY (order_id, product_id, attribute_id),
+    FOREIGN KEY (order_id) REFERENCES orders(id),
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    FOREIGN KEY (attribute_id) REFERENCES attributes(id)
+);
