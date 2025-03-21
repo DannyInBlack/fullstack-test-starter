@@ -21,12 +21,14 @@ class MutationType extends ObjectType
                 'addOrder' => [
                     'type' => Type::boolean(), // Returns true if the order is successfully inserted
                     'args' => [
-                        'items' => new NonNull(new ListOfType(new NonNull(TypeRegistry::type(OrderItemInputType::class)))), // Reference the standalone input type
+                        'items' => new NonNull(new ListOfType(
+                            new NonNull(TypeRegistry::type(OrderItemInputType::class))
+                        )),
                     ],
                     'resolve' => function ($root, $args): bool {
                         $items = $args['items'];
 
-                        // Calculate the total price
+                        // Calculate the total price from attached products
                         $total = 0.0;
                         foreach ($items as $item) {
                             $productId = $item['productID'];
@@ -41,16 +43,16 @@ class MutationType extends ObjectType
                         // Insert the order into the database
                         $orderId = DataSource::insertOrder($total);
 
-                        // Insert products and attributes into the order_product and order_product_attribute tables
+                        // Insert order items and their attributes
                         foreach ($items as $item) {
                             $productId = $item['productID'];
                             $quantity = $item['quantity'];
                             $attributeIDs = $item['attributeIDs'] ?? [];
 
-                            DataSource::insertOrderProduct($orderId, $productId, $quantity);
+                            $orderItemId = DataSource::insertOrderItem($orderId, $productId, $quantity);
 
                             foreach ($attributeIDs as $attributeId) {
-                                DataSource::insertOrderProductAttribute($orderId, $productId, $attributeId);
+                                DataSource::insertItemAttribute($orderItemId, $attributeId);
                             }
                         }
 

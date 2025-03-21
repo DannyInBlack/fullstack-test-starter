@@ -223,23 +223,27 @@ abstract class DataSource
         return $stmt->insert_id; // Return the ID of the newly inserted order
     }
 
-    public static function insertOrderProduct(int $orderId, string $productId, int $quantity): bool
+    public static function insertOrderItem(int $orderId, string $productId, int $quantity): int
     {
         $conn = self::getConn();
-        $sql = "INSERT INTO order_product (order_id, product_id, quantity) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO order_item (order_id, product_id, quantity) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("isi", $orderId, $productId, $quantity);
         $stmt->execute();
 
-        return $stmt->error ? false : true;
+        if ($stmt->error) {
+            throw new \RuntimeException("Failed to insert order: " . $stmt->error);
+        }
+
+        return $stmt->insert_id;
     }
 
-    public static function insertOrderProductAttribute(int $orderId, string $productId, string $attributeId): bool
+    public static function insertItemAttribute(int $itemId, string $attributeId): bool
     {
         $conn = self::getConn();
-        $sql = "INSERT INTO order_product_attribute (order_id, product_id, attribute_id) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO item_attribute (item_id, attribute_id) VALUES (?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iss", $orderId, $productId, $attributeId);
+        $stmt->bind_param("is", $itemId, $attributeId);
         $stmt->execute();
 
         return $stmt->error ? false : true;
