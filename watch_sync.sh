@@ -3,5 +3,7 @@
 # This script automatically syncs this repo with the htdocs/scandi dir
 
 while inotifywait -r -e modify,create,delete /home/danny/Desktop/Repos/fullstack-test-starter; do
-    rsync -av --delete /home/danny/Desktop/Repos/fullstack-test-starter/ /opt/lampp/htdocs/scandi/
+    sudo rsync -av --delete /home/danny/Desktop/Repos/fullstack-test-starter/ /opt/lampp/htdocs/fullstack-test-starter/
+    sudo chmod -R 755 /opt/lampp/htdocs/
+    sudo chown -R daemon:daemon /opt/lampp/htdocs/
 done
