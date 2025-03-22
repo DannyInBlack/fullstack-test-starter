@@ -2,17 +2,30 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-// Define the base path of your project
+
 $basePath = '/fullstack-test-starter';
 
-// Remove the base path from the REQUEST_URI
+// Remove the base path from the request
 $uri = $_SERVER['REQUEST_URI'];
 if (strpos($uri, $basePath) === 0) {
     $uri = substr($uri, strlen($basePath));
 }
 
-// Remove query string from the URI (if present)
+// Remove query string from the URI
 $uri = strtok($uri, '?');
+
+
+// Handle CORS headers for all requests
+header("Access-Control-Allow-Origin: *"); 
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS"); 
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+// Handle OPTIONS preflight requests
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+
 
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
     $r->post('/graphql', [App\Controller\GraphQL::class, 'handle']);
