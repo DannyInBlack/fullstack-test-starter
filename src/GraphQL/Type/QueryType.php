@@ -8,13 +8,13 @@ use App\GraphQL\Type\CategoryType;
 use App\GraphQL\Type\ProductType;
 use GraphQL\Type\Definition\ListOfType;
 use GraphQL\Type\Definition\ObjectType;
+use GraphQL\Type\Definition\Type;
 
 class QueryType extends ObjectType
 {
     public function __construct()
     {
         parent::__construct([
-            "name"=> "Query",
             'fields' => [
                 'categories' => [
                     'type' => new ListOfType(TypeRegistry::type(CategoryType::class)),
@@ -23,8 +23,17 @@ class QueryType extends ObjectType
                 ],
                 'products' => [
                     'type' => new ListOfType(TypeRegistry::type(ProductType::class)),
-                    'description' => 'Returns a list of products',
-                    'resolve' => static fn (): ?array => DataSource::getProducts(),
+                    'description' => 'Returns a list of products, optionally filtered by category',
+                    'args' => [
+                        'category' => [
+                            'type' => Type::string(), // Optional argument for filtering by category
+                            'description' => 'The category to filter products by',
+                        ],
+                    ],
+                    'resolve' => function ($rootValue, array $args):?array {
+                        $category = $args['category'] ?? null;
+                        return DataSource::getProducts($category);
+                    },
                 ],
             ],
         ]);

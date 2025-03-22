@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom' // Import BrowserRouter
-import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import './index.css'
 import App from './App.tsx'
 
@@ -10,23 +10,12 @@ const client = new ApolloClient({
     cache: new InMemoryCache(),
 });
 
-client
-  .query({
-    query: gql`
-      query Categories {
-        categories {
-          name
-          __typename
-        }
-      }
-    `,
-  })
-  .then((result) => console.log(result));
-
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <ApolloProvider client={client}>
+        <App />
+      </ApolloProvider>
     </BrowserRouter>
   </StrictMode>,
 )

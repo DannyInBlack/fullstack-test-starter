@@ -3,14 +3,36 @@ import { Link } from 'react-router-dom';
 import styles from './Navbar.module.css';
 import Logo from '../assets/Logo.svg';
 import Cart from '../assets/Cart.svg';
+import { gql, useQuery } from '@apollo/client';
+
+const GET_CATEGORIES = gql`
+  query Categories {
+    categories {
+      name
+    }
+  }
+`;
+
+interface Category {
+  name: string;
+  __typename: string;
+}
 
 const Navbar: React.FC = () => {
+
+  const { loading, error, data } = useQuery(GET_CATEGORIES);
+
+  if (error) return <p>Error : {error.message}</p>;
+
   return (
     <nav className={styles.navbar}>
       <div className={styles.tabs}>
-        <Link to="/women" className={styles.tab}>Women</Link>
-        <Link to="/men" className={styles.tab}>Men</Link>
-        <Link to="/children" className={styles.tab}>Children</Link>
+        {!loading && 
+          data.categories.map((category : Category) => (
+            <Link className={styles.tab} to={`/?category=${category.name}`}>
+              {category.name}
+            </Link>
+          ))}
       </div>
       <div className={styles.logoContainer}>
         <img src={Logo} alt="Logo" className={styles.logo} />

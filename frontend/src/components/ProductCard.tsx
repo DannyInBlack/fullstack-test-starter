@@ -1,23 +1,31 @@
 import React from 'react';
 import styles from './ProductCard.module.css';
+import Cart from '../assets/Cart.svg';
+import { Link } from 'react-router-dom';
 
 interface ProductCardProps {
+  id: string;
   image: string;
   name: string;
-  price: string;
-  outOfStock?: boolean;
+  price: number;
+  inStock: boolean;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ image, name, price, outOfStock }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ id, image, name, price, inStock } : ProductCardProps) => {
   return (
-    <div className={`${styles.card} ${outOfStock ? styles.outOfStock : ''}`}>
-      <img src={image} alt={name} className={styles.image} />
-      {outOfStock && <div className={styles.overlay}>OUT OF STOCK</div>}
-      <div className={styles.details}>
-        <h3 className={styles.name}>{name}</h3>
-        <p className={styles.price}>{price}</p>
+    <Link to={`/product/${id}`} >
+      <div className={`${styles.card} ${inStock ? styles.outOfStock : ''}`}>
+        <img src={image} alt={name} className={styles.image} />
+        {inStock && <div className={styles.overlay}>OUT OF STOCK</div>}
+        {!inStock && <button className={styles.cartButton}>
+          <img src={Cart} alt="Cart" />
+          </button>}
+        <div className={styles.details}>
+          <p className={styles.name}>{name}</p>
+          <p className={styles.price}>{price}</p>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

@@ -75,14 +75,26 @@ abstract class DataSource
     }
 
     /** @return array<Product> */
-    public static function getProducts(): ?array
+    public static function getProducts(?string $category = null): ?array
     {
-        $sql = "SELECT * from test.products";
+
+        $sql = "";
         $conn = self::getConn();
+
+        $category
+        ? $sql = "SELECT * from test.products WHERE products.category=?"
+        : $sql = "SELECT * from test.products";
+        
         $stmt = $conn->prepare($sql);
+        
+        if ($category != null) {
+            $stmt->bind_param("s", $category);
+        }
+
         $stmt->execute();
         $result = $stmt->get_result();
-
+        
+        
         $products = [];
 
         if ($result) {
