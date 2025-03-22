@@ -2,14 +2,7 @@ import React from 'react';
 import styles from './ProductCard.module.css';
 import Cart from '../assets/Cart.svg';
 import { Link } from 'react-router-dom';
-
-interface ProductCardProps {
-  id: string;
-  image: string;
-  name: string;
-  price: number;
-  inStock: boolean;
-}
+import { ProductCardProps } from '../interfaces/Product';
 
 const ProductCard: React.FC<ProductCardProps> = ({ id, image, name, price, inStock } : ProductCardProps) => {
   return (

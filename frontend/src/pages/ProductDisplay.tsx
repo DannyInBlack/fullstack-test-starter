@@ -2,18 +2,34 @@ import React from 'react';
 import ProductCard from '../components/ProductCard';
 import styles from './ProductDisplay.module.css';
 import { useSearchParams } from 'react-router-dom';
-
-const products = [
-  { image: 'path/to/image1.jpg', name: 'Running Short', price: 50.00 },
-  { image: 'path/to/image2.jpg', name: 'Running Short', price: 50.00 },
-  { image: 'path/to/image3.jpg', name: 'Running Short', price: 50.00, inStock: true },
-  // Add more products as needed
-];
+import { gql, useQuery } from '@apollo/client';
+import { Product } from '../interfaces/Product';
 
 const ProductDisplay: React.FC = () => {
 
   let [searchParams] = useSearchParams();
-  console.log(searchParams.get('category'))
+  const [products, setProducts] = React.useState<Product[]>([]);
+
+  const fetchProducts = async () => {
+    let category = searchParams.get('category');
+    if (!category || category === 'all')
+      category = null;
+
+    const GET_PRODUCTS = gql`
+      query GetProducts {
+        products {
+          id
+          name
+          price
+          inStock
+          image
+        }
+      }
+    `;
+    const { data } = useQuery(GET_PRODUCTS);
+
+    setProducts(data.products);
+  }
 
   return (
     <div className={styles.container}>
@@ -23,9 +39,9 @@ const ProductDisplay: React.FC = () => {
           <ProductCard
             id=''
             key={index}
-            image={product.image}
+            image={product.gallery[0]}
             name={product.name}
-            price={product.price}
+            price={product.prices[0].amount}
             inStock={product.inStock || false}
           />
         ))}

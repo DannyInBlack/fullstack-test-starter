@@ -15,7 +15,7 @@ class PriceType extends ObjectType
     {
         parent::__construct([
             'fields' => [
-                'amount' => Type::string(),
+                'amount' => Type::float(),
                 'currency' => [
                     'type' => TypeRegistry::type(CurrencyType::class),
                     'resolve' => static fn (Price $price): ?Currency => DataSource::findCurrency($price->id),
