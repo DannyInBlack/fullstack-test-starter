@@ -1,0 +1,61 @@
+.attribute h3 {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.attribute.cart {
+  margin-bottom: 0px;
+}
+
+.options {
+  display: flex;
+  gap: 10px;
+}
+
+.options.cart {
+  gap: 3px;
+}
+
+.option {
+  padding: 10px 20px;
+  border: 1px solid #000;
+  background: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  color: black;
+  font-size: large;
+  font-weight: 200;
+}
+
+.option.cart {
+  font-size: medium;
+  padding: 5px ;
+  width: 40px;
+  min-width: fit-content;
+  height: 30px;
+  cursor: default;
+}
+
+.option:hover {
+  background: #f0f0f0;
+}
+.option.cart:hover {
+  background: initial;
+}
+
+.colorOption {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #000;
+  cursor: pointer;
+}
+
+.colorOption.cart {
+  width: 20px;
+  height: 20px;
+  cursor: default;
+}
+
+.active {
+  border: 2px solid #5ece7b;
+}

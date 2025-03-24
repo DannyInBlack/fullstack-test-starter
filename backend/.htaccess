@@ -1,0 +1,13 @@
+RewriteEngine on
+
+RewriteCond %{REQUEST_URI} !^/public/
+
+# Check if the requested file or directory exists
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redirect everything else to the public directory
+RewriteRule ^(.*)$ public/index.php [L]
+
+# Set the default file to index.php
+DirectoryIndex public/index.php

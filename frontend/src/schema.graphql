@@ -1,0 +1,37 @@
+query {
+  categories {
+    name
+    __typename
+  }
+  products {
+    id
+    name
+    inStock
+    gallery
+    description
+    category
+    brand
+    __typename
+    attributes {
+      id
+      name
+      type
+      __typename
+      items {
+        id
+        displayValue
+        value
+        __typename
+      }
+    }
+    prices {
+      amount
+      __typename
+      currency {
+        label
+        symbol
+        __typename
+      }
+    }
+  }
+}

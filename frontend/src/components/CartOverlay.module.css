@@ -1,0 +1,87 @@
+.overlay {
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 66px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  z-index: 10;
+}
+
+.cart {
+  background: #f8f9fa;
+  color: black;
+  margin-right: 100px;
+  width: 400px;
+  min-height: 30%;
+  max-height: 80%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+.items {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.item {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.item img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.quantity {
+  display: flex;
+  align-items: center;
+}
+
+.quantity button {
+  width: 30px;
+  height: 30px;
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.placeOrder {
+  font-weight: bold;
+  background: #5ECE7B;
+  border-radius: 3px;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.placeOrder:hover {
+  background: #4da966;
+  transition: background 0.3s ease;
+}
+
+.placeOrder:disabled{
+  background: gray;
+  cursor: not-allowed;
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
