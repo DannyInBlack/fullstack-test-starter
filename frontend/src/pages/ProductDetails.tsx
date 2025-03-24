@@ -9,7 +9,6 @@ import Next from '../assets/Next.svg';
 import Previous from '../assets/Previous.svg';
 import { OrderItem } from '../interfaces/Order';
 import { useCart } from '../context/CartContext'; // Import useCart
-import { toKebabCase } from '../utils';
 
 const ProductDetails: React.FC = () => {
   const { cartItems, setCartItems, setCartOpen } = useCart(); // Use useCart hook
@@ -139,7 +138,7 @@ const ProductDetails: React.FC = () => {
         <h1 className={styles.title}>{product.name}</h1>
         <div className={styles.attributes}>
           {product.attributes.map(attr => (
-            <Attribute key={attr.name} attr={attr} orderItem={item} setItem={(item) => setItem(item)} />
+            <Attribute cart={false} key={attr.name} attr={attr} orderItem={item} setItem={(item) => setItem(item)} />
           ))}
         </div>
         <div className={styles.price}>

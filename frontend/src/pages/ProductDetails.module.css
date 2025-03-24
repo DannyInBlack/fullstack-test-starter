@@ -11,7 +11,7 @@
   gap: 5px;
   margin-left: 100px;
   max-height: 40em;
-  overflow-y: scroll;
+  overflow-y: auto;
   direction: rtl;
 }
 

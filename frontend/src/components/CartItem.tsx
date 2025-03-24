@@ -32,7 +32,7 @@ const CartItem: React.FC<CartItemProps> = ({
         <div className={styles.attributes}>
           {attributes.map((attr) => (
             <Attribute 
-              cart 
+              cart={true}
               key={attr.name} 
               attr={attr} 
               orderItem={orderItem} 
