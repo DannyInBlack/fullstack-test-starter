@@ -53,7 +53,7 @@ const CartOverlay: React.FC = () => {
   );
 
   return (
-    <div className={styles.overlay}>
+    <div data-testid='cart-overlay' className={styles.overlay}>
       <div className={styles.cart}>
         <h2 data-testid='cart-item-amount'>My Bag, {cartItems.length > 0 && `${totalItems} ${totalItems > 1? "Items" : "Item"}` }</h2>
         <div className={styles.items}>

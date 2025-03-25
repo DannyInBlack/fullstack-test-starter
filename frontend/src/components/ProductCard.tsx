@@ -6,12 +6,7 @@ import { Product } from '../interfaces/Product';
 import { useCart } from '../context/CartContext';
 import { OrderItem } from '../interfaces/Order';
 
-interface ProductCardProps {
-  product: Product;
-  setCategory: (category: string | null) => void; // TODO: add context for category
-}
-
-const ProductCard: React.FC<ProductCardProps> = ({ product, setCategory }) => {
+const ProductCard: React.FC<{product: Product}> = ({ product }) => {
 
   const { addItem } = useCart();
 
@@ -31,7 +26,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, setCategory }) => {
   }
 
   return (
-    <Link className={styles.link} onClick={() => setCategory(null)} data-testid={`product-${product.id}`} to={`/product/${product.id}`} >
+    <Link className={styles.link} data-testid={`product-${product.id}`} to={`/product/${product.id}`} >
       <div className={`${styles.card} ${product.inStock ? '': styles.outOfStock }`}>
         <img src={product.gallery[0]} alt={"Product image"} className={styles.image} />
         {/* Handle out of stock products - very simple logic tbh */}

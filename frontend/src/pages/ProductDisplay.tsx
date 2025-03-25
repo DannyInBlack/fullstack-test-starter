@@ -3,11 +3,7 @@ import ProductCard from '../components/ProductCard';
 import styles from './ProductDisplay.module.css';
 import { gql, useQuery } from '@apollo/client';
 import { Product } from '../interfaces/Product';
-
-export interface ProductDisplayProps {
-  category: string | null;
-  setCategory: (category: string | null) => void;
-}
+import { useParams } from 'react-router-dom';
 
 const GET_PRODUCTS = gql`
   query GetProducts($category: String) {
@@ -37,10 +33,12 @@ const GET_PRODUCTS = gql`
 `;
 
 
-const ProductDisplay: React.FC<ProductDisplayProps> = ({ category, setCategory }) => {
+const ProductDisplay: React.FC = () => {
 
   const [products, setProducts] = React.useState<Product[]>([]);
   const [hasMounted, setHasMounted] = React.useState(false);
+  const { category } = useParams()
+  console.log(category)
 
   // Track if the component has mounted
   useEffect(() => {
@@ -48,7 +46,7 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ category, setCategory }
   }, []);
 
   useQuery<{ products: Product[] }>(GET_PRODUCTS, {
-    variables: { category: category === "all" ? null : category },
+    variables: { category: category === "all" || category === "undefined" ? null : category },
     skip: !hasMounted,
     onCompleted: (data) => {
       setProducts(data.products);
@@ -60,7 +58,7 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ category, setCategory }
       <h1 className={styles.title}>{category || "All"}</h1>
       <div className={styles.grid}>
         {products.map(product => (
-          <ProductCard key={product.id} product={product} setCategory={(category) => setCategory(category)}/>
+          <ProductCard key={product.id} product={product}/>
         ))}
       </div>
     </div>

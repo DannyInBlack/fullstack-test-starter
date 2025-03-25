@@ -1,30 +1,27 @@
 import React, { useEffect } from 'react';
-import { Link, parsePath } from 'react-router-dom';
+import { Link, parsePath, useParams } from 'react-router-dom';
 import styles from './Navbar.module.css';
 import Logo from '../assets/Logo.svg';
 import Cart from '../assets/Cart.svg';
 import { Category } from '../interfaces/Category';
 import CartOverlay from './CartOverlay';
 import { useCart } from '../context/CartContext';
+import { gql, useQuery } from '@apollo/client';
 
-export interface NavbarProps {
-  data: {categories: Category[]} ;
-  category: string | null;
-  setCategory: (category: string | null) => void;
-}
 
-const Navbar: React.FC<NavbarProps> = ({ 
-  data,
-  category,
-  setCategory
-}) => {
+const Navbar: React.FC = () => {
   const { setCartOpen, cartOpen } = useCart();
 
-  if (category === null && parsePath(window.location.pathname).pathname === "/") {
-    useEffect(() => {
-      setCategory("all");
-    }, [category]);
-  }
+  const GET_CATEGORIES = gql(`
+     query Categories {
+       categories {
+         name
+       }
+     }
+  `);
+
+  const { data } = useQuery(GET_CATEGORIES);
+  const { category } = useParams();
 
   return (
     <nav className={styles.navbar}>
@@ -35,8 +32,8 @@ const Navbar: React.FC<NavbarProps> = ({
               key={cat.name}
               id={"#"+cat.name+"-tab"} 
               className={styles.tab} 
-              onClick={() => setCategory(cat.name)} 
-              to={`/?category=${cat.name}`}
+              // onClick={() => setCategory(cat.name)} 
+              to={`/${cat.name}`}
               data-testid={cat.name === category ? "active-category-link" : "category-link"}
               style={{
                 color: cat.name === category ? "#5ECE7B" : "#000000",
