@@ -38,7 +38,6 @@ const ProductDisplay: React.FC = () => {
   const [products, setProducts] = React.useState<Product[]>([]);
   const [hasMounted, setHasMounted] = React.useState(false);
   const { category } = useParams()
-  console.log(category)
 
   // Track if the component has mounted
   useEffect(() => {
@@ -46,7 +45,7 @@ const ProductDisplay: React.FC = () => {
   }, []);
 
   useQuery<{ products: Product[] }>(GET_PRODUCTS, {
-    variables: { category: category === "all" || category === "undefined" ? null : category },
+    variables: { category: category === "all"? null : category },
     skip: !hasMounted,
     onCompleted: (data) => {
       setProducts(data.products);

@@ -7,11 +7,12 @@ import { CartProvider } from './context/CartContext'; // Import CartProvider
 
 const App: React.FC = () => (
   <CartProvider>
-    <Navbar />
     <Routes>
-      <Route path='/:category' element={<PDP />} />
-      <Route path='/' element={<PDP />} />
-      <Route path='/product/:id' element={<ProductDetails />} />
+      <Route path='/' element={<Navbar />}>
+        <Route index element={<PDP />} />
+        <Route path='/:category' element={<PDP />} />
+        <Route path='/product/:id' element={<ProductDetails />} />
+      </Route>
     </Routes>
   </CartProvider>
 )

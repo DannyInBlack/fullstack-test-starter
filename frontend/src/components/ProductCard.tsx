@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Product } from '../interfaces/Product';
 import { useCart } from '../context/CartContext';
 import { OrderItem } from '../interfaces/Order';
+import { toKebabCase } from '../utils';
 
 const ProductCard: React.FC<{product: Product}> = ({ product }) => {
 
@@ -26,7 +27,7 @@ const ProductCard: React.FC<{product: Product}> = ({ product }) => {
   }
 
   return (
-    <Link className={styles.link} data-testid={`product-${product.id}`} to={`/product/${product.id}`} >
+    <Link className={styles.link} data-testid={`product-${toKebabCase(product.name)}`} to={`/product/${product.id}`} >
       <div className={`${styles.card} ${product.inStock ? '': styles.outOfStock }`}>
         <img src={product.gallery[0]} alt={"Product image"} className={styles.image} />
         {/* Handle out of stock products - very simple logic tbh */}
