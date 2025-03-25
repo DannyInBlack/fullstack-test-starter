@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Link, parsePath, useParams } from 'react-router-dom';
+import React from 'react';
+import { Link, useParams } from 'react-router-dom';
 import styles from './Navbar.module.css';
 import Logo from '../assets/Logo.svg';
 import Cart from '../assets/Cart.svg';
@@ -31,8 +31,7 @@ const Navbar: React.FC = () => {
             <Link 
               key={cat.name}
               id={"#"+cat.name+"-tab"} 
-              className={styles.tab} 
-              // onClick={() => setCategory(cat.name)} 
+              className={styles.tab}  
               to={`/${cat.name}`}
               data-testid={cat.name === category ? "active-category-link" : "category-link"}
               style={{
