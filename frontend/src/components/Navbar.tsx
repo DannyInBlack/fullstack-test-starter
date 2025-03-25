@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Link, Outlet, useNavigate, useParams } from 'react-router-dom';
+import React from 'react';
+import { Link, Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import styles from './Navbar.module.css';
 import Logo from '../assets/Logo.svg';
 import Cart from '../assets/Cart.svg';
@@ -23,13 +23,11 @@ const Navbar: React.FC = () => {
 
   const { data } = useQuery(GET_CATEGORIES);
   let { category } = useParams();
+  let location = useLocation();
 
-  useEffect(() => {
-    if (data && category === undefined){
-      navigate(`/${data.categories[0].name}`);
-    }
-  }, [])
-  
+  if (data && location.pathname == '/'){
+    navigate(`/${data.categories[0].name}`);
+  }
 
   return (
     <>

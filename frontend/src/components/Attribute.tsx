@@ -18,11 +18,13 @@ const Attribute: React.FC<{
     <div data-testid={`${cart? "cart-item" : "product"}-attribute-${toKebabCase(attr.name)}`} key={attr.name} className={`${styles.attribute} ${cart? styles.cart: ''}`}>
       <h3>{attr.name.toUpperCase()}:</h3>
       <div className={`${styles.options} ${cart? styles.cart : ''}`}>
-        {attr.items.map(item => (
+        {attr.items.map(item => { 
+          console.log(item.value);
+          return(
           <button 
             key={item.id} 
             className={`${swatch? styles.colorOption : styles.option} ${cart? styles.cart : ''} ${orderItem.selectedAttributes[attr.name] === item.id || selected === item.id? styles.active : ''}`} 
-            data-testid={cart ? `cart-item-attribute-${toKebabCase(attr.name)}-${toKebabCase(attr.name)}${orderItem.selectedAttributes[attr.name] === item.id || selected === item.id? '-selected': ''}` : ''}
+            data-testid={`${cart? "cart-item" : "product"}-attribute-${toKebabCase(attr.name)}-${item.value}${orderItem.selectedAttributes[attr.name] === item.id || selected === item.id? '-selected': ''}`}
             style={{ backgroundColor: swatch? item.displayValue : '' }}
             onClick={setItem? () => {
               setItem({ 
@@ -36,7 +38,7 @@ const Attribute: React.FC<{
             >
             {!swatch && (cart? item.value : item.displayValue)}
           </button>
-        ))}
+        )})}
       </div>
     </div>
   );
